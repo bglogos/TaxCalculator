@@ -8,12 +8,14 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <DocumentationFile>TaxCalculator.Cli.xml</DocumentationFile>
+    <DocumentationFile>bin\TaxCalculator.Cli.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.CommandLineUtils" Version="1.1.1" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="5.0.0" />
+    <PackageReference Include="NReco.Logging.File" Version="1.1.1" />
     <PackageReference Include="SonarAnalyzer.CSharp" Version="8.20.0.28934">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -25,5 +27,10 @@
   </ItemGroup>
   <ItemGroup Label="Projects and Files Reference">
     <AdditionalFiles Include="..\configs\stylecop.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TaxCalculator.Business\TaxCalculator.Business.csproj" />
+    <ProjectReference Include="..\TaxCalculator.Core\TaxCalculator.Core.csproj" />
+    <ProjectReference Include="..\TaxCalculator.Models\TaxCalculator.Models.csproj" />
   </ItemGroup>
 </Project>

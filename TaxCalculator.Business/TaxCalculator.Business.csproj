@@ -7,7 +7,7 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <DocumentationFile>TaxCalculator.Business.xml</DocumentationFile>
+    <DocumentationFile>bin\TaxCalculator.Business.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -22,5 +22,9 @@
   </ItemGroup>
   <ItemGroup Label="Projects and Files Reference">
     <AdditionalFiles Include="..\configs\stylecop.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TaxCalculator.Core\TaxCalculator.Core.csproj" />
+    <ProjectReference Include="..\TaxCalculator.Models\TaxCalculator.Models.csproj" />
   </ItemGroup>
 </Project>

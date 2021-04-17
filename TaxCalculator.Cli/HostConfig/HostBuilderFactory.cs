@@ -1,6 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using TaxCalculator.Business.Services;
+using TaxCalculator.Core.Application;
+using TaxCalculator.Core.Services;
 
 namespace TaxCalculator.Cli.HostConfig
 {
@@ -17,12 +20,14 @@ namespace TaxCalculator.Cli.HostConfig
             Host.CreateDefaultBuilder()
                 .ConfigureServices((_, services) =>
                     services
-                        .AddSingleton<App, App>())
+                        .AddSingleton<IApp, App>()
+                        .AddTransient<ISalaryService, SalaryService>())
                 .ConfigureLogging(logging =>
                 {
                     logging.ClearProviders();
-                    logging.AddConsole();
-                    logging.SetMinimumLevel(LogLevel.Error);
-                });
+                    logging.AddFile("TaxCalculator.log", append: true);
+                    logging.SetMinimumLevel(LogLevel.Trace);
+                })
+                .UseConsoleLifetime();
     }
 }
