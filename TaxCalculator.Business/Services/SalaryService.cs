@@ -33,7 +33,7 @@ namespace TaxCalculator.Business.Services
         /// <inheritdoc />
         public Salary GetNetSalary(Salary grossSalary)
         {
-            ITaxCalculator taxCalculator = _taxCalculatorFactory.GetForCurrency(grossSalary.Currency, _appConfig.TaxCalculatorConfig);
+            ITaxCalculator taxCalculator = _taxCalculatorFactory.GetForCurrency(grossSalary.Currency);
             return taxCalculator.GetNetSalary(grossSalary);
         }
 

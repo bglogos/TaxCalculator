@@ -41,13 +41,13 @@ namespace TaxCalculator.Tests.Unit.Services
             ITaxCalculator taxCalculator = Mock.Of<ITaxCalculator>();
 
             Mock.Get(_taxCalculatorFactory)
-                .Setup(tcf => tcf.GetForCurrency(grossSalary.Currency, It.IsAny<TaxCalculatorConfig>()))
+                .Setup(tcf => tcf.GetForCurrency(grossSalary.Currency))
                 .Returns(taxCalculator);
 
             _service.GetNetSalary(grossSalary);
 
             Mock.Get(_taxCalculatorFactory)
-                .Verify(tcf => tcf.GetForCurrency(grossSalary.Currency, It.IsAny<TaxCalculatorConfig>()), Times.Once);
+                .Verify(tcf => tcf.GetForCurrency(grossSalary.Currency), Times.Once);
         }
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace TaxCalculator.Tests.Unit.Services
             ITaxCalculator taxCalculator = Mock.Of<ITaxCalculator>();
 
             Mock.Get(_taxCalculatorFactory)
-                .Setup(tcf => tcf.GetForCurrency(grossSalary.Currency, It.IsAny<TaxCalculatorConfig>()))
+                .Setup(tcf => tcf.GetForCurrency(grossSalary.Currency))
                 .Returns(taxCalculator);
 
             _service.GetNetSalary(grossSalary);

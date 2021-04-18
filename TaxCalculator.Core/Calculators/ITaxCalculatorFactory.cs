@@ -1,5 +1,4 @@
 ﻿using System;
-using TaxCalculator.Models.Config;
 using TaxCalculator.Models.Enums;
 
 namespace TaxCalculator.Core.Calculators
@@ -13,11 +12,10 @@ namespace TaxCalculator.Core.Calculators
         /// Gets the tax calculator for the given currency.
         /// </summary>
         /// <param name="currency">The currency.</param>
-        /// <param name="calculatorConfigurations">The tax calculator configurations.</param>
         /// <returns>
         /// A new tax calculator instance.
         /// </returns>
         /// <exception cref="InvalidOperationException">The currency \"{currency}\" is not supported.</exception>
-        ITaxCalculator GetForCurrency(Currency currency, TaxCalculatorConfig calculatorConfigurations);
+        ITaxCalculator GetForCurrency(Currency currency);
     }
 }

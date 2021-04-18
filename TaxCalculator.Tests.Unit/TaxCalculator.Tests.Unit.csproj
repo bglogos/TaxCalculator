@@ -39,7 +39,4 @@
   <ItemGroup>
     <ProjectReference Include="..\TaxCalculator.Cli\TaxCalculator.Cli.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Calculators\" />
-  </ItemGroup>
 </Project>
