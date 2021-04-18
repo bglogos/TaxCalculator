@@ -33,7 +33,7 @@ namespace TaxCalculator.Cli
         /// <inheritdoc />
         public Task RunAsync(string[] args)
         {
-            CommandLineApplication cmdApp = new CommandLineApplication(throwOnUnexpectedArg: false);
+            CommandLineApplication cmdApp = new(throwOnUnexpectedArg: false);
 
             CommandOption grossAmount = cmdApp.Option(Messages.GrossAmountOption, Messages.GrossAmountHint, CommandOptionType.SingleValue);
             CommandOption currency = cmdApp.Option(
