@@ -24,5 +24,5 @@ TaxCalculator.Cli.exe -g 1000
 
 Calculate the net amount from 3000 USD:
 ```
-TaxCalculator.Cli.exe -g 1000 -c USD
+TaxCalculator.Cli.exe -g 3000 -c USD
 ```
