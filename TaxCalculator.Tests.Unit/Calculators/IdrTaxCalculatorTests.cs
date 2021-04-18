@@ -40,12 +40,46 @@ namespace TaxCalculator.Tests.Unit.Calculators
         }
 
         /// <summary>
+        /// GetNetSalary method should calculate the taxes for salaries on the no taxation threshold.
+        /// </summary>
+        [Fact]
+        public void GetNetSalaryShouldCalculateWithSalaryOnNoTaxationThreshold()
+        {
+            decimal grossSalaryAmount = _config.NoTaxationThreshold;
+
+            Salary grossSalary = SalaryProvider.Get(grossSalaryAmount, Currency.IDR);
+            Salary netSalary = _calculator.GetNetSalary(grossSalary);
+
+            netSalary.Amount.Should().Be(grossSalaryAmount);
+        }
+
+        /// <summary>
         /// GetNetSalary method should calculate the taxes for salaries above the no taxation threshold, but under the social contribution threshold.
         /// </summary>
         [Fact]
         public void GetNetSalaryShouldCalculateWithSalaryAboveNoTaxationThresholdAndUnderSocialContributionsThreshold()
         {
             decimal grossSalaryAmount = _config.NoTaxationThreshold + (_config.SocialContributionsThreshold / 2M);
+
+            Salary grossSalary = SalaryProvider.Get(grossSalaryAmount, Currency.IDR);
+            Salary netSalary = _calculator.GetNetSalary(grossSalary);
+
+            decimal taxableAmount = grossSalary.Amount - _config.NoTaxationThreshold;
+            decimal expectedNetAmount =
+                grossSalary.Amount -
+                (taxableAmount * (_config.IncomeTaxPercent / 100M)) -
+                (taxableAmount * (_config.SocialContributionsPercent / 100M));
+
+            netSalary.Amount.Should().Be(expectedNetAmount);
+        }
+
+        /// <summary>
+        /// GetNetSalary method should calculate the taxes for salaries above the social contribution threshold.
+        /// </summary>
+        [Fact]
+        public void GetNetSalaryShouldCalculateWithSalaryOnSocialContributionsThreshold()
+        {
+            decimal grossSalaryAmount = _config.NoTaxationThreshold + _config.SocialContributionsThreshold;
 
             Salary grossSalary = SalaryProvider.Get(grossSalaryAmount, Currency.IDR);
             Salary netSalary = _calculator.GetNetSalary(grossSalary);
