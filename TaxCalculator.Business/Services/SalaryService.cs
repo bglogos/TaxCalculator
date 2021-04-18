@@ -1,6 +1,7 @@
 ﻿using System;
 using TaxCalculator.Business.Calculators;
 using TaxCalculator.Core.Services;
+using TaxCalculator.Models.Config;
 using TaxCalculator.Models.Dtos;
 using TaxCalculator.Models.Enums;
 
@@ -12,10 +13,21 @@ namespace TaxCalculator.Business.Services
     /// <seealso cref="ISalaryService" />
     public class SalaryService : ISalaryService
     {
+        private readonly AppConfig _appConfig;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SalaryService"/> class.
+        /// </summary>
+        /// <param name="appConfig">The application configuration.</param>
+        public SalaryService(AppConfig appConfig)
+        {
+            _appConfig = appConfig;
+        }
+
         /// <inheritdoc />
         public Salary GetNetSalary(Salary grossSalary)
         {
-            ITaxCalculator taxCalculator = TaxCalculatorFactory.GetForCurrency(grossSalary.Currency);
+            ITaxCalculator taxCalculator = TaxCalculatorFactory.GetForCurrency(grossSalary.Currency, _appConfig.TaxCalculatorConfig);
             return taxCalculator.GetNetSalary(grossSalary);
         }
 
@@ -29,23 +41,28 @@ namespace TaxCalculator.Business.Services
                     throw new ArgumentOutOfRangeException(nameof(amount), "The provided salary cannot be zero or negative.");
                 }
 
-                Salary salary = new Salary
+                return new Salary
                 {
                     Amount = salaryAmount,
-                    Currency = Currency.IDR
+                    Currency = GetCurrency(currencyCode)
                 };
-
-                if (!string.IsNullOrEmpty(currencyCode) && Enum.TryParse(currencyCode, ignoreCase: true, out Currency currency))
-                {
-                    salary.Currency = currency;
-                }
-
-                return salary;
             }
             else
             {
                 throw new ArgumentException("The provided gross salary is not in valid format.");
             }
+        }
+
+        private Currency GetCurrency(string currencyCode)
+        {
+            currencyCode = !string.IsNullOrEmpty(currencyCode) ? currencyCode : _appConfig.DefaultCurrencyCode;
+
+            if (!Enum.TryParse(currencyCode, ignoreCase: true, out Currency currency))
+            {
+                throw new ArgumentException($"The provided currency \"{currencyCode}\" is invalid.");
+            }
+
+            return currency;
         }
     }
 }

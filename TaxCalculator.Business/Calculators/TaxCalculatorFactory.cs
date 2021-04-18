@@ -1,4 +1,5 @@
 ﻿using System;
+using TaxCalculator.Models.Config;
 using TaxCalculator.Models.Enums;
 
 namespace TaxCalculator.Business.Calculators
@@ -12,15 +13,19 @@ namespace TaxCalculator.Business.Calculators
         /// Gets the tax calculator for the given currency.
         /// </summary>
         /// <param name="currency">The currency.</param>
-        /// <returns>A new tax calculator instance.</returns>
-        public static ITaxCalculator GetForCurrency(Currency currency)
+        /// <param name="calculatorConfigurations">The tax calculator configurations.</param>
+        /// <returns>
+        /// A new tax calculator instance.
+        /// </returns>
+        /// <exception cref="InvalidOperationException">The currency \"{currency}\" is not supported.</exception>
+        public static ITaxCalculator GetForCurrency(Currency currency, TaxCalculatorConfig calculatorConfigurations)
         {
             switch (currency)
             {
                 case Currency.IDR:
-                    return new IdrTaxCalculator();
+                    return new IdrTaxCalculator(calculatorConfigurations.IdrCalculatorConfig);
                 default:
-                    throw new InvalidOperationException($"The currency {currency} is not supported.");
+                    throw new InvalidOperationException($"The currency \"{currency}\" is not supported.");
             }
         }
     }

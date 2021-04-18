@@ -15,11 +15,13 @@ namespace TaxCalculator.Core.Services
         Salary GetNetSalary(Salary grossSalary);
 
         /// <summary>
-        /// Builds a <see cref="Salary"/> instance from given amount and currency.
+        /// Builds a <see cref="Salary" /> instance from given amount and currency.
         /// </summary>
         /// <param name="amount">The amount.</param>
         /// <param name="currencyCode">The currency code.</param>
-        /// <returns>A new <see cref="Salary"/> instance.</returns>
+        /// <returns>
+        /// A new <see cref="Salary" /> instance.
+        /// </returns>
         Salary BuildSalary(string amount, string currencyCode);
     }
 }
