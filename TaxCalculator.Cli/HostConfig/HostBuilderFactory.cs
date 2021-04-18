@@ -20,8 +20,8 @@ namespace TaxCalculator.Cli.HostConfig
         /// Creates new <see cref="IHostBuilder"/>.
         /// </summary>
         /// <returns>A new <see cref="IHostBuilder"/> instance.</returns>
-        public static IHostBuilder Create() =>
-            Host.CreateDefaultBuilder()
+        public static IHostBuilder Create(string[] args) =>
+            Host.CreateDefaultBuilder(args)
                 .ConfigureAppConfiguration((context, configuration) =>
                 {
                     configuration
@@ -29,6 +29,12 @@ namespace TaxCalculator.Cli.HostConfig
                         .AddJsonFile($"appsettings.{context.HostingEnvironment.EnvironmentName}.json", optional: true, reloadOnChange: true);
 
                     _configurationRoot = configuration.Build();
+                })
+                .ConfigureLogging(logging =>
+                {
+                    logging.ClearProviders();
+                    logging.AddFile("TaxCalculator.log", append: true);
+                    logging.SetMinimumLevel(LogLevel.Trace);
                 })
                 .ConfigureServices((_, services) =>
                     services
@@ -39,13 +45,8 @@ namespace TaxCalculator.Cli.HostConfig
                             AppConfig appConfig = new();
                             _configurationRoot.GetSection(nameof(AppConfig)).Bind(appConfig);
                             return appConfig;
-                        }))
-                .ConfigureLogging(logging =>
-                {
-                    logging.ClearProviders();
-                    logging.AddFile("TaxCalculator.log", append: true);
-                    logging.SetMinimumLevel(LogLevel.Trace);
-                })
+                        })
+                        .AddHostedService<ConsoleHostedService>())
                 .UseConsoleLifetime();
     }
 }

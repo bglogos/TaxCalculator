@@ -25,6 +25,5 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TaxCalculator.Core\TaxCalculator.Core.csproj" />
-    <ProjectReference Include="..\TaxCalculator.Models\TaxCalculator.Models.csproj" />
   </ItemGroup>
 </Project>

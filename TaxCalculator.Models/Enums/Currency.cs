@@ -8,6 +8,11 @@
         /// <summary>
         /// Imagiaria Dolar
         /// </summary>
-        IDR
+        IDR,
+
+        /// <summary>
+        /// American Dolar
+        /// </summary>
+        USD
     }
 }

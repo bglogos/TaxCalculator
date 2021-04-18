@@ -1,5 +1,6 @@
 ﻿using System;
 using TaxCalculator.Models.Config;
+using TaxCalculator.Models.Constants;
 using TaxCalculator.Models.Enums;
 
 namespace TaxCalculator.Business.Calculators
@@ -25,7 +26,7 @@ namespace TaxCalculator.Business.Calculators
                 case Currency.IDR:
                     return new IdrTaxCalculator(calculatorConfigurations.IdrCalculatorConfig);
                 default:
-                    throw new InvalidOperationException($"The currency \"{currency}\" is not supported.");
+                    throw new InvalidOperationException(Messages.GetNotSupportedCurrency(currency));
             }
         }
     }

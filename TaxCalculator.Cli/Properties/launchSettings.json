@@ -2,7 +2,7 @@
   "profiles": {
     "TaxCalculator.Cli": {
       "commandName": "Project",
-      "commandLineArgs": "-g 2000"
+      "commandLineArgs": "-h"
     }
   }
 }

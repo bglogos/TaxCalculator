@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.CommandLineUtils;
 using TaxCalculator.Core.Application;
 using TaxCalculator.Core.Services;
+using TaxCalculator.Models.Config;
+using TaxCalculator.Models.Constants;
 using TaxCalculator.Models.Dtos;
 
 namespace TaxCalculator.Cli
@@ -13,26 +15,32 @@ namespace TaxCalculator.Cli
     public class App : IApp
     {
         private readonly ISalaryService _salaryService;
+        private readonly AppConfig _appConfig;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="App"/> class.
+        /// Initializes a new instance of the <see cref="App" /> class.
         /// </summary>
-        public App(ISalaryService salaryService)
+        /// <param name="salaryService">The salary service.</param>
+        /// <param name="appConfig">The application configuration.</param>
+        public App(
+            ISalaryService salaryService,
+            AppConfig appConfig)
         {
             _salaryService = salaryService;
+            _appConfig = appConfig;
         }
 
         /// <inheritdoc />
-        public async Task Run(string[] args)
+        public Task RunAsync(string[] args)
         {
             CommandLineApplication cmdApp = new CommandLineApplication(throwOnUnexpectedArg: false);
 
-            CommandOption grossAmount = cmdApp.Option("-g | --gross <amount>", "The amount of the gross salary.", CommandOptionType.SingleValue);
+            CommandOption grossAmount = cmdApp.Option(Messages.GrossAmountOption, Messages.GrossAmountHint, CommandOptionType.SingleValue);
             CommandOption currency = cmdApp.Option(
-                "-c | --currency <currencyCode>",
-                "The currency of the salary. If not provided, the default value is IDR.",
+                Messages.CurrencyOption,
+                Messages.GetCurrencyHint(_appConfig.DefaultCurrencyCode),
                 CommandOptionType.SingleValue);
-            cmdApp.HelpOption("-? | -h | --help");
+            cmdApp.HelpOption(Messages.HelpOption);
 
             cmdApp.OnExecute(() =>
             {
@@ -41,20 +49,14 @@ namespace TaxCalculator.Cli
                     Salary grossSalary = _salaryService.BuildSalary(grossAmount.Value(), currency.Value());
                     Salary netSalary = _salaryService.GetNetSalary(grossSalary);
 
-                    Console.WriteLine($"Net salary: {netSalary.Amount} {netSalary.Currency}");
+                    Console.WriteLine(Messages.GetResult(netSalary));
                 }
-
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.BackgroundColor = ConsoleColor.Black;
-                Console.WriteLine("\nPress Ctrl+C to exit.\n");
-
-                Console.ResetColor();
 
                 return 0;
             });
 
             cmdApp.Execute(args);
-            await Task.CompletedTask;
+            return Task.CompletedTask;
         }
     }
 }

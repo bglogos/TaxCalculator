@@ -11,6 +11,6 @@ namespace TaxCalculator.Core.Application
         /// Runs the application with the specified arguments.
         /// </summary>
         /// <param name="args">The arguments.</param>
-        Task Run(string[] args);
+        Task RunAsync(string[] args);
     }
 }

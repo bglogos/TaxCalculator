@@ -2,6 +2,7 @@
 using TaxCalculator.Business.Calculators;
 using TaxCalculator.Core.Services;
 using TaxCalculator.Models.Config;
+using TaxCalculator.Models.Constants;
 using TaxCalculator.Models.Dtos;
 using TaxCalculator.Models.Enums;
 
@@ -38,7 +39,7 @@ namespace TaxCalculator.Business.Services
             {
                 if (salaryAmount <= 0)
                 {
-                    throw new ArgumentOutOfRangeException(nameof(amount), "The provided salary cannot be zero or negative.");
+                    throw new ArgumentOutOfRangeException(nameof(amount), Messages.SalaryCannotBeZeroOrNegative);
                 }
 
                 return new Salary
@@ -49,7 +50,7 @@ namespace TaxCalculator.Business.Services
             }
             else
             {
-                throw new ArgumentException("The provided gross salary is not in valid format.");
+                throw new ArgumentException(Messages.InvalidGrossSalaryFormat);
             }
         }
 
@@ -59,7 +60,7 @@ namespace TaxCalculator.Business.Services
 
             if (!Enum.TryParse(currencyCode, ignoreCase: true, out Currency currency))
             {
-                throw new ArgumentException($"The provided currency \"{currencyCode}\" is invalid.");
+                throw new ArgumentException(Messages.GetInvalidCurrency(currencyCode));
             }
 
             return currency;
