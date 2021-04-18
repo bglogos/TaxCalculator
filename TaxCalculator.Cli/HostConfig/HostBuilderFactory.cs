@@ -2,8 +2,10 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using TaxCalculator.Business.Calculators;
 using TaxCalculator.Business.Services;
 using TaxCalculator.Core.Application;
+using TaxCalculator.Core.Calculators;
 using TaxCalculator.Core.Services;
 using TaxCalculator.Models.Config;
 
@@ -40,6 +42,7 @@ namespace TaxCalculator.Cli.HostConfig
                     services
                         .AddSingleton<IApp, App>()
                         .AddTransient<ISalaryService, SalaryService>()
+                        .AddTransient<ITaxCalculatorFactory, TaxCalculatorFactory>()
                         .AddSingleton((_) =>
                         {
                             AppConfig appConfig = new();

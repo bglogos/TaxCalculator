@@ -1,5 +1,5 @@
 ﻿using System;
-using TaxCalculator.Business.Calculators;
+using TaxCalculator.Core.Calculators;
 using TaxCalculator.Core.Services;
 using TaxCalculator.Models.Config;
 using TaxCalculator.Models.Constants;
@@ -14,21 +14,26 @@ namespace TaxCalculator.Business.Services
     /// <seealso cref="ISalaryService" />
     public class SalaryService : ISalaryService
     {
+        private readonly ITaxCalculatorFactory _taxCalculatorFactory;
         private readonly AppConfig _appConfig;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SalaryService"/> class.
+        /// Initializes a new instance of the <see cref="SalaryService" /> class.
         /// </summary>
+        /// <param name="taxCalculatorFactory">The tax calculator factory.</param>
         /// <param name="appConfig">The application configuration.</param>
-        public SalaryService(AppConfig appConfig)
+        public SalaryService(
+            ITaxCalculatorFactory taxCalculatorFactory,
+            AppConfig appConfig)
         {
+            _taxCalculatorFactory = taxCalculatorFactory;
             _appConfig = appConfig;
         }
 
         /// <inheritdoc />
         public Salary GetNetSalary(Salary grossSalary)
         {
-            ITaxCalculator taxCalculator = TaxCalculatorFactory.GetForCurrency(grossSalary.Currency, _appConfig.TaxCalculatorConfig);
+            ITaxCalculator taxCalculator = _taxCalculatorFactory.GetForCurrency(grossSalary.Currency, _appConfig.TaxCalculatorConfig);
             return taxCalculator.GetNetSalary(grossSalary);
         }
 

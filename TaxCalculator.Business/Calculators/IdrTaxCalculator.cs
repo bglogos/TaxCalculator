@@ -1,4 +1,5 @@
 ﻿using System;
+using TaxCalculator.Core.Calculators;
 using TaxCalculator.Models.Config;
 using TaxCalculator.Models.Dtos;
 
@@ -8,7 +9,7 @@ namespace TaxCalculator.Business.Calculators
     /// The tax calculator for Imagiaria Dolars.
     /// </summary>
     /// <seealso cref="ITaxCalculator" />
-    internal class IdrTaxCalculator : ITaxCalculator
+    public class IdrTaxCalculator : ITaxCalculator
     {
         private readonly IdrCalculatorConfig _config;
 
@@ -24,25 +25,16 @@ namespace TaxCalculator.Business.Calculators
         /// <inheritdoc />
         public Salary GetNetSalary(Salary grossSalary)
         {
-            decimal taxableAmount = grossSalary.Amount - _config.NoTaxationThreshold;
-
-            Salary netSalary = new Salary
-            {
-                Amount = grossSalary.Amount,
-                Currency = grossSalary.Currency
-            };
-
-            if (taxableAmount <= 0)
-            {
-                return netSalary;
-            }
+            decimal taxableAmount = Math.Max(grossSalary.Amount - _config.NoTaxationThreshold, 0);
 
             decimal incomeTax = taxableAmount * (_config.IncomeTaxPercent / 100M);
             decimal socialContribution = Math.Min(taxableAmount, _config.SocialContributionsThreshold) * (_config.SocialContributionsPercent / 100M);
 
-            netSalary.Amount -= incomeTax + socialContribution;
-
-            return netSalary;
+            return new Salary
+            {
+                Amount = grossSalary.Amount - incomeTax - socialContribution,
+                Currency = grossSalary.Currency
+            };
         }
     }
 }

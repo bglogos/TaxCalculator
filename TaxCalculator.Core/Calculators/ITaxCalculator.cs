@@ -1,11 +1,11 @@
 ﻿using TaxCalculator.Models.Dtos;
 
-namespace TaxCalculator.Business.Calculators
+namespace TaxCalculator.Core.Calculators
 {
     /// <summary>
     /// Tax calculation methods.
     /// </summary>
-    internal interface ITaxCalculator
+    public interface ITaxCalculator
     {
         /// <summary>
         /// Gets the net salary.
